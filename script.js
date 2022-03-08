@@ -1,39 +1,41 @@
-const state = {
-  todo: [
-    { description: "Learn HTML", done: true },
-    { description: "Learn CSS", done: false },
-    { description: "Learn JavaScript", done: false },
-  ],
-};
+const ul = document.querySelector("#list");
+const addButton = document.querySelector("#add");
+addButton.addEventListener("click", addItem);
+let li = [];
 
-/* Visualisierung des State Teil 1 */
-function renderTodos() {
-  const list = document.querySelector("#list");
-  list.innerHTML = "";
-
-  state.todo.forEach((todo) => {
-    const todoLi = document.createElement("li");
-
+function addItem() {
+  const input = document.querySelector("#input");
+  const item = input.value;
+  const textNode = document.createTextNode(item);
+  if (item === "" || item === " ") {
+    message = "Keine Beschreibung eingegeben";
+    alert(message);
+    return false;
+  } else {
+    li = document.createElement("li");
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
-    checkbox.checked = todo.done;
+    checkbox.setAttribute("id", "check");
 
-    /* State des Benutzers über die Checkbox aktualisieren */
-    checkbox.addEventListener("change", (e) => {
-      /* todo-Parameter ist hier noch im Scope der Funktion */
-      console.log(e.target.checked);
-      const newTodoDoneState = e.target.checked;
-      todo.done = newTodoDoneState;
-    });
-
-    /* Visualisierung des State Teil 2 */
-    todoLi.appendChild(checkbox);
-
-    const todoText = document.createTextNode(todo.description);
-    todoLi.append(todoText);
-
-    list.appendChild(todoLi);
-  });
+    const label = document.createElement("label");
+    ul.appendChild(label);
+    li.appendChild(checkbox);
+    label.appendChild(textNode);
+    li.appendChild(label);
+    ul.insertBefore(li, ul.childNodes[0]);
+    input.value = "";
+  }
 }
 
-renderTodos();
+const removeButton = document.querySelector("#remove");
+removeButton.addEventListener("click", removeItem);
+
+function removeItem() {
+  li = ul.children;
+  for (let index = 0; index < li.length; index++) {
+    const element = li[index];
+    while (li[index] && li[index].children[0].checked) {
+      ul.removeChild(li[index]);
+    }
+  }
+}
