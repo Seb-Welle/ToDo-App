@@ -27,6 +27,16 @@ function addItem() {
   }
 }
 
+list.addEventListener("change", function (e) {
+  const checkbox = e.target;
+  const liElement = checkbox.parentElement;
+  if (checkbox.checked) {
+    liElement.style.textDecoration = "line-through";
+  } else {
+    liElement.style.textDecoration = "";
+  }
+});
+
 const removeButton = document.querySelector("#remove");
 removeButton.addEventListener("click", removeItem);
 
